@@ -12,14 +12,14 @@ Apply this checklist to every page and to the final deck. Treat every failed ite
 ## Asset separation
 
 - Every independent semantic visual is a separate image object unless it was deliberately classified as an inseparable cluster.
-- Every final raster asset came from the image-edit/generation and separation workflow, not a source crop.
+- At the reconstruction checkpoint, raster assets came from the image-edit/generation and separation workflow. In the explicitly requested original-picture mode, mapped final picture objects instead contain the preserved user-provided originals, verified under `own-images-workflow.md`; source-slide crops remain disallowed substitutes.
 - Every asset is complete and has clean alpha edges.
 - No asset contains unwanted chroma-key color, halos, missing tissue color, fused neighboring objects, pseudo-text, or a watermark.
 - Every image has recorded provenance and an explicit slide position.
 
 ## Editability
 
-- Every readable title, label, caption, legend, and bullet point is a visible native text box.
+- Slide-level titles, labels, captions, legends, and bullet points are visible native text boxes. Intrinsic text inside a restored original picture remains part of that picture and is not presented as editable text.
 - Text is not baked into generated visual assets except unavoidable brand/background identity approved by the workflow.
 - Panels, rings, sectors, dividers, and ordinary connectors are native structural objects where practical.
 - The user can select, move, resize, replace, or delete each separated visual independently.
@@ -48,3 +48,11 @@ Apply this checklist to every page and to the final deck. Treat every failed ite
 - Every page validation contains top-level `passed: true`.
 - Final validation reports the expected page count, no missing parts, no failed page validations, and no contract violations.
 - The source and earlier deliverables remain preserved; the final output is a new PPTX.
+
+## Own-original-picture mode
+
+- Original pictures were supplied as actual reference inputs during initial full-slide image generation.
+- Every requested original has an explicit mapping to its final slide and picture object.
+- Mapped generated picture objects were replaced with the preserved original files before final delivery.
+- Embedded original-picture content was checked against the inputs, including any re-encoding.
+- The replaced final PPTX was rendered and checked independently of the generated-assets checkpoint; checkpoint validation is not reused as replacement-stage proof.

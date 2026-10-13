@@ -1,12 +1,14 @@
 # AI Image to Editable PPT
 
-把截图、扫描幻灯片、PDF 或图片型 PPT，重建成可以逐项编辑的 PowerPoint。
+完整工作流：**放入自己的原始图片 → AI 生图设计整页 → 重建成可编辑 PPT → 把对应图片替换回原始素材**。
 
-**核心工作流：以参考图为依据，用 Codex 内置生图工具重建复杂视觉素材，再把它们作为独立图片对象放回 PPT；所有可读文字用原生文本框重建。**
+也支持把现有截图、扫描幻灯片、PDF 或图片型 PPT，重建成可以逐项编辑的 PowerPoint。
 
-**生成后可以自己换图：打开 PPT，选中某个图片对象，就能换成自己的照片、插图、产品图或原始素材，沿用已有文字和版式。**
+**从生图时就使用自己的素材**：先把自己的照片、实验图、产品图、插图或 Logo 作为参考图片传入 Codex 内置生图工具，让 AI 设计整体页面。随后把生成的整页重建为文字、结构和图片分层的可编辑 PPT，最后将指定对象换回用户提供的原始图片，保留原始素材的细节。
 
-Rebuild visual slide references into layered, editable PowerPoint files. Complex visuals are recreated with AI image generation; text and simple layout geometry remain native PowerPoint objects. Replace any reconstructed picture with your own image or original asset in PowerPoint.
+**原图替换是完整流程的收尾步骤**：AI 生成页面中的图片可能发生变化，制作 PPT 时用一开始提供的原始文件替换对应对象。成品中这些图片仍可独立移动、缩放和再次替换，文字与版式继续编辑。
+
+Bring your own original images into AI slide generation, rebuild the generated layout as an editable PowerPoint, then replace the corresponding AI-rendered pictures with the original assets. Also supports reconstruction of existing slide references. Text and simple layout geometry remain native PowerPoint objects.
 
 ## 编辑能力
 
@@ -16,7 +18,19 @@ Rebuild visual slide references into layered, editable PowerPoint files. Complex
 | 标题、标签、正文、图例 | 原生文本框 | 编辑文字、字体、字号、颜色 |
 | 面板、分隔线、普通箭头等简单结构 | 原生形状 | 调整位置、尺寸、样式 |
 
-图片对象内部的像素不会变成可编辑矢量路径。不可分割的语义组合可以作为一个图片对象，例如相互连接的解剖结构。
+图片对象内部的像素不会变成可编辑矢量路径。原始照片或实验图内部已有的文字也仍属于原图；幻灯片层面的标题、正文和标签则用可编辑文本框重建。不可分割的语义组合可以作为一个图片对象，例如相互连接的解剖结构。
+
+## 自带原图：从生图到 PPT 的完整流程
+
+1. **提供原始素材**：上传需要出现在幻灯片中的图片和文字内容，并说明哪张图用于哪个位置或用途。保留这些原始文件。
+2. **将原图作为生图参考输入**：生图工具同时接收这些图片和页面设计要求，生成整体视觉稿。原图在这一步就参与设计。
+3. **把整页视觉稿重建为可编辑 PPT**：拆分视觉对象，重建原生文本框和简单布局结构，并记录每个原始素材对应的图片对象。
+4. **换回原始图片**：在 PPT 组装完成后，由代理将对应的生图图片对象替换为一开始提供的原始文件，保留现有位置、层级和版式，检查比例和留白。
+5. **检查最终文件**：重新渲染替换后的 PPT，核对原始素材、可编辑文字和布局，再交付最终 `.pptx`。
+
+这样既能使用 AI 的整页设计，又能让最终 PPT 中指定的照片、实验图、产品图或 Logo 使用原始素材，而不依赖生图模型重现它们的每个细节。没有原始素材对应的装饰性视觉，可以继续使用 AI 重建的独立图片。
+
+该流程由代理协调生图、`editppt` 重建和演示文稿工具的原图替换阶段；详细执行规则见 [自带原图工作流](skills/rebuild-reference-editable-ppt/references/own-images-workflow.md)。
 
 ## 换成自己的图片或原始素材
 
@@ -34,7 +48,7 @@ Rebuild visual slide references into layered, editable PowerPoint files. Complex
 
 ## 包含的技能
 
-- [`rebuild-reference-editable-ppt`](skills/rebuild-reference-editable-ppt/SKILL.md)：强调参考图一致性、复杂插图逐项生图和独立分层，是推荐入口。
+- [`rebuild-reference-editable-ppt`](skills/rebuild-reference-editable-ppt/SKILL.md)：推荐入口，支持自带原图参与生图设计、分层重建和最终原图替换，也支持已有参考图的忠实重建。
 - [`image-to-editable-ppt`](skills/image-to-editable-ppt/SKILL.md)：配套的转换与验证流程，包含完整的 `editppt` Python CLI、页面清单、任务状态、素材处理和 PPTX 组装工具。
 
 两个技能都需要安装。`imagegen` 和 `Presentations` 是运行环境提供的配套能力，本仓库不复制它们的实现，也不包含图像模型权重。
@@ -85,7 +99,11 @@ python -m pip install -e ./skills/image-to-editable-ppt/cli
 
 ## 使用
 
-上传参考图、PDF 或图片型 PPT，并发送：
+**从自己的素材开始：**上传原始图片及页面内容，并发送：
+
+> 按 $rebuild-reference-editable-ppt 完成完整工作流：先把我上传的 product.png 和 experiment.png 作为参考图片输入内置生图工具，设计一页幻灯片；再将生成页面重建为可编辑 PPT；最后将对应图片对象替换回这两个原始文件，保留版式，文字可编辑，并检查最终 PPT。
+
+**重建已有页面：**上传参考图、PDF 或图片型 PPT，并发送：
 
 > 按 $rebuild-reference-editable-ppt 把这张图重建成可编辑 PPT。复杂插图逐项使用内置生图模型重建，再按原图位置放回；所有文字可编辑，各个图像对象可以独立替换，不要简化医学插图。
 

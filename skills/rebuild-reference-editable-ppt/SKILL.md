@@ -1,11 +1,18 @@
 ---
 name: rebuild-reference-editable-ppt
-description: Rebuild reference images, screenshots, scanned slides, PDFs, or image-based decks as high-fidelity layered editable PowerPoint files. Use when the user wants every complex illustration, medical or scientific visual, icon, device, material, or semantic visual cluster recreated from the reference with AI-generated raster assets, positioned as independent PowerPoint image objects, while all readable text and simple layout structure remain natively editable. Trigger especially for requests such as “按原图分层重建”, “图片转可编辑PPT但不要简化矢量”, “逐项生成素材再定位叠加”, “AI素材分层PPT”, or “complex visuals must match the reference rather than use approximate icons”.
+description: Create layered editable PowerPoint from visual references or the user's own original images. Supports supplying original pictures to AI slide generation, rebuilding the generated layout as editable PPT, and replacing corresponding picture objects with the original files. Also use for source-faithful screenshot/PDF reconstruction, complex illustrations as independent image objects, and native editable text and layout. Triggers include “自带原图生图再转PPT”, “生图后换回原始图片”, “按原图分层重建”, and “逐项生成素材再定位叠加”.
 ---
 
 # Reference-faithful layered editable PPT
 
 Rebuild supplied visual references as editable slides without replacing their visual identity with simplified vector approximations. Treat AI-generated raster assets as legitimate editable PowerPoint image objects: each independent semantic visual can be moved, resized, replaced, or deleted, while text and structural layout remain native.
+
+## Select the entry workflow
+
+- Existing slide references: follow the reconstruction workflow below.
+- Original pictures plus a request to design slides: first read `references/own-images-workflow.md` completely. Supply the user's pictures as actual inputs to image generation, rebuild the resulting full-slide designs through this skill, then replace mapped picture objects with the preserved original files. Treat original-image replacement as part of completion when requested; do not deliver a generated-only PPT and leave the replacement to the user.
+
+The object-source contract below governs the reconstruction checkpoint. Explicitly requested original-file replacement is a subsequent stage covered by `references/own-images-workflow.md`; it does not authorize source-slide crops as substitutes for the original files.
 
 ## Required skill stack
 
@@ -13,7 +20,7 @@ Use the following skills in this order:
 
 1. Read and follow `image-to-editable-ppt` completely as the governing conversion workflow and deterministic `editppt` runtime.
 2. Read and follow `imagegen` for all raster generation, reference-based editing, chroma-key separation, and output validation.
-3. Use `Presentations` for final-deck rendering, visual inspection, and narrowly targeted native-object corrections after final assembly when necessary.
+3. Use `Presentations` for final-deck rendering, visual inspection, narrowly targeted native-object corrections, and mapped original-picture replacement after reconstruction when requested.
 
 If the generic presentation workflow conflicts with `image-to-editable-ppt`, let the specialized reconstruction workflow own page manifests, page builds, worker dispatch, recording, and final assembly. Do not replace a prepared reconstruction run with a generic slide template.
 
@@ -133,6 +140,7 @@ Do not change slide content to work around a console-encoding error.
 - Report progress by concrete milestones: inventory complete, asset sheets generated, assets separated, page built, visual QA complete, page validation passed, final deck validated.
 - Never claim completion from structure validation alone.
 - Report any object whose source-faithful separation is genuinely blocked; do not hide the problem behind an approximation.
+- When the user requested the original-picture workflow, completion requires the mapped original files to be embedded in the delivered PPTX and the replaced final file to be inspected. Apply `references/own-images-workflow.md` rather than treating editable picture objects alone as completion.
 - Deliver only the final PPTX unless the user requests intermediate assets or previews.
 
 ## Invocation examples
@@ -140,3 +148,4 @@ Do not change slide content to work around a console-encoding error.
 - “Use `$rebuild-reference-editable-ppt` to turn these two figures into one two-page PPT. Do not simplify any medical illustrations.”
 - “按 `$rebuild-reference-editable-ppt` 把截图逐项生成素材并定位叠加，所有文字都要可编辑。”
 - “Use `$rebuild-reference-editable-ppt`; each device, icon, tissue illustration, and material sample must be its own editable image object.”
+- “先把我上传的产品图和实验图作为参考图片输入生图工具，设计整页；再转成可编辑 PPT，最后把对应图片换回我提供的原始文件。”
