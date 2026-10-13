@@ -1,0 +1,4 @@
+interface:
+  display_name: "参考图分层可编辑 PPT"
+  short_description: "按参考图逐项复刻复杂素材并重建为分层可编辑的高保真 PowerPoint"
+  default_prompt: "Use $rebuild-reference-editable-ppt to recreate these reference images as a layered editable PowerPoint without simplifying the visual assets."
