@@ -4,7 +4,9 @@
 
 **核心工作流：以参考图为依据，用 Codex 内置生图工具重建复杂视觉素材，再把它们作为独立图片对象放回 PPT；所有可读文字用原生文本框重建。**
 
-Rebuild visual slide references into layered, editable PowerPoint files. Complex visuals are recreated with AI image generation; text and simple layout geometry remain native PowerPoint objects.
+**生成后可以自己换图：打开 PPT，选中某个图片对象，就能换成自己的照片、插图、产品图或原始素材，沿用已有文字和版式。**
+
+Rebuild visual slide references into layered, editable PowerPoint files. Complex visuals are recreated with AI image generation; text and simple layout geometry remain native PowerPoint objects. Replace any reconstructed picture with your own image or original asset in PowerPoint.
 
 ## 编辑能力
 
@@ -15,6 +17,20 @@ Rebuild visual slide references into layered, editable PowerPoint files. Complex
 | 面板、分隔线、普通箭头等简单结构 | 原生形状 | 调整位置、尺寸、样式 |
 
 图片对象内部的像素不会变成可编辑矢量路径。不可分割的语义组合可以作为一个图片对象，例如相互连接的解剖结构。
+
+## 换成自己的图片或原始素材
+
+重建完成后，每个分离的视觉素材都是独立的 PowerPoint 图片对象。你可以自己把其中某张图换成自己的图片，也可以换回已有的原始高清素材；例如把示意设备换成自己的产品照片、把通用插图换成自己的实验图。
+
+1. 打开生成的 `.pptx`，选中要替换的图片。
+2. 使用 PowerPoint 的“更改图片 / Change Picture”功能，选择自己的图片文件。
+3. 检查新图片的比例、裁剪和透明背景，必要时微调尺寸和位置；不同 PowerPoint 版本的菜单位置可能不同。
+
+已有文字和其他独立对象可以继续编辑，无需重新重建整张幻灯片。如果手头只有整张原始截图，而没有独立高清素材，需要先获得对应的独立图片，才能精确换回该对象。
+
+也可以在生成完成后，把 PPT 和自己的替换素材一起交给代理，明确指定“第几页、哪个对象、换成哪张图”，让代理修改已有图片对象并检查布局。例如：
+
+> 第 2 页右侧的设备图片换成我上传的 product.png，保留已有标题和版式，检查替换后的比例和位置。
 
 ## 包含的技能
 
